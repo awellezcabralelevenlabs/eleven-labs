@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello ProductController!{% endblock %}
+{% block title %}Project "Docker / Symfony"{% endblock %}
 
 {% block body %}
 <style>
@@ -21,13 +21,20 @@
     </div>
 {% endif %}
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+<h1>Products</h1>
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ '/var/www/project/src/Controller/ProductController.php'|file_link(0) }}">src/Controller/ProductController.php</a></code></li>
-        <li>Your template at <code><a href="{{ '/var/www/project/templates/product/index.html.twig'|file_link(0) }}">templates/product/index.html.twig</a></code></li>
-    </ul>
-</div>
+{% for product in products %}
+    {{ product.id }} <br/>
+    {{ product.title }} <br/>
+    {{ product.description }} <br/>
+    {{ product.price }} <br/>
+    {{ product.city }} <br/>
+    {{ product.pictures }} <br/>
+    <img src="/public/uploads/{{ product.pictures }}" title="my image" alt="My image"> <br/>
+    {{ product.longLat }} <br/>
+    {{ product.uid }} <br/>
+
+    <br/>
+{% endfor %}
+
 {% endblock %}

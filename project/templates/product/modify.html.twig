@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Project "Docker / Symfony"{% endblock %}
+
+{% block body %}
+    <div class="mb-3">
+        You are logged in as {{ app.user.username }}, <a href="{{ path('app_logout') }}">Logout</a>
+    </div>
+    <div class="mb-3">
+        <a href="{{ path('product') }}">< Back</a>
+    </div>
+
+    <h1>Modify product</h1>
+
+    {{ form_start(modifyFormProduct) }}
+        {{ form_row(modifyFormProduct.title) }}
+        {{ form_row(modifyFormProduct.description, {
+            label: 'Description'
+        }) }}
+        {{ form_row(modifyFormProduct.price) }}
+        {{ form_row(modifyFormProduct.city) }}
+        {{ form_row(modifyFormProduct.pictures) }}
+        <button type="submit" class="btn">Modify</button>
+    {{ form_end(modifyFormProduct) }}
+{% endblock %}

@@ -21,7 +21,8 @@ class ProductType extends AbstractType
             // ->add('uid')
             // ->add('pictures')
             ->add('pictures', FileType::class, [
-                'mapped' => false
+                'mapped' => false,
+                'required' => false
             ])
             // ->add('date')
         ;

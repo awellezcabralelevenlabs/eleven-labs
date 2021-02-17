@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Entity\Product;
 use App\Form\ProductType;
+use App\Repository\ProductRepository;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints\DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -21,8 +22,11 @@ class ProductController extends AbstractController
      */
     public function index(): Response
     {
+        $repository = $this->getDoctrine()->getRepository(Product::class);
+        $products = $repository->findAll();
+        
         return $this->render('product/index.html.twig', [
-            'controller_name' => 'ProductController',
+            'products' => $products,
         ]);
     }
 
@@ -36,26 +40,22 @@ class ProductController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $uploadedFile = $form['pictures']->getData();
 
             /** @var UploadedFile $uploadedFile */
-            // $uploadedFile = $form['imageFile']->getData();
+            $uploadedFile = $form['pictures']->getData();
 
-            $destination = $this->getParameter('kernel.project_dir').'/public/uploads';
-            $originalFilename = pathinfo($uploadedFile->getClientOriginalName(), PATHINFO_FILENAME);
+            if ($uploadedFile) {
+                $destination = $this->getParameter('kernel.project_dir').'/public/uploads';
+                $originalFilename = pathinfo($uploadedFile->getClientOriginalName(), PATHINFO_FILENAME);
+    
+                $newFilename = Urlizer::urlize($originalFilename).'-'.uniqid().'.'.$uploadedFile->guessExtension();
+                $uploadedFile->move(
+                    $destination,
+                    $newFilename
+                );
 
-            $newFilename = Urlizer::urlize($originalFilename).'-'.uniqid().'.'.$uploadedFile->guessExtension();
-            $uploadedFile->move(
-                $destination,
-                $newFilename
-            );
-
-            $product->setPictures($newFilename);
-
-            // echo $user->getId();
-            // echo '<pre>';
-            // var_dump($form->getData());
-            // echo '</pre>';
+                $product->setPictures($newFilename);
+            }
 
             $product->setUid($user->getId());
             $product->setDate(new \DateTime());
@@ -70,10 +70,6 @@ class ProductController extends AbstractController
 
             $coord = $lat . "," . $long;
             $product->setLongLat($coord);
-            // echo "<pre>";
-            // var_dump($result);
-            // echo "</pre>";
-            // exit;
 
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($product);
@@ -88,12 +84,57 @@ class ProductController extends AbstractController
     }
 
     /**
-     * @Route("/product/modify", name="modify_product")
+     * @Route("/product/{id}", name="modify_product")
      */
-    public function modifyProduct(): Response
+    public function modifyProduct(Request $request, int $id, ProductRepository $productRepository, UserInterface $user): Response
     {
+        $product = $productRepository
+            ->find($id);
+        
+        $form = $this->createForm(ProductType::class, $product);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            /** @var UploadedFile $uploadedFile */
+            $uploadedFile = $form['pictures']->getData();
+
+            if ($uploadedFile && !empty($uploadedFile)) {
+                $destination = $this->getParameter('kernel.project_dir').'/public/uploads';
+                $originalFilename = pathinfo($uploadedFile->getClientOriginalName(), PATHINFO_FILENAME);
+    
+                $newFilename = Urlizer::urlize($originalFilename).'-'.uniqid().'.'.$uploadedFile->guessExtension();
+                $uploadedFile->move(
+                    $destination,
+                    $newFilename
+                );
+
+                $product->setPictures($newFilename);
+            }
+
+            $product->setUid($user->getId());
+            $product->setDate(new \DateTime());
+
+            $httpClient = new \Http\Adapter\Guzzle6\Client();
+            $provider = new \Geocoder\Provider\GoogleMaps\GoogleMaps($httpClient, null, 'AIzaSyB9feLVQ3SSdmgrerLfxYlUtIlxJfpwDrU');
+            $geocoder = new \Geocoder\StatefulGeocoder($provider, 'fr');
+
+            $result = $geocoder->geocodeQuery(GeocodeQuery::create($form->getData()->getCity()));
+            $lat = $result->first()->getCoordinates()->getLatitude();
+            $long = $result->first()->getCoordinates()->getLongitude();
+
+            $coord = $lat . "," . $long;
+            $product->setLongLat($coord);
+
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($product);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('product');
+        }
+
         return $this->render('product/modify.html.twig', [
-            'controller_name' => 'ProductController',
+            'modifyFormProduct' => $form->createView()
         ]);
     }
 }
