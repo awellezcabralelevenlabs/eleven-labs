@@ -3,38 +3,26 @@
 {% block title %}Project "Docker / Symfony"{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+    {% for product in products %}
+        <div class="col">
+            <div class="card shadow-sm">
+                <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
 
-{% if app.user %}
-    <div class="mb-3">
-        You are logged in as {{ app.user.username }}, <a href="{{ path('app_logout') }}">Logout</a>
-    </div>
-    <div class="mb-3">
-        <a href="{{ path('create_product') }}">Create a product</a>
-    </div>
-{% else %}
-    <div class="mb-3">
-        For post new articles, <a href="{{ path('app_login') }}">Login</a>
-    </div>
-{% endif %}
-
-<h1>Products</h1>
-
-{% for product in products %}
-    {{ product.id }} <br/>
-    {{ product.title }} <br/>
-    {{ product.description }} <br/>
-    {{ product.price }} <br/>
-    {{ product.city }} <br/>
-    {{ product.pictures }} <br/>
-    <img src="/public/uploads/{{ product.pictures }}" title="my image" alt="My image"> <br/>
-    {{ product.longLat }} <br/>
-    {{ product.uid }} <br/>
-
-    <br/>
-{% endfor %}
-
+                <div class="card-body">
+                    <h3>{{ product.title }}</h3>
+                    <h4>Prix : {{ product.price }} $</h4>
+                    <h5>Ville : {{ product.city }}</h5>
+                    <p class="card-text">{{ product.description }}</p>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="btn-group">
+                            <a href="/product/{{ product.id }}">
+                                <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
+                            </a>
+                        </div>
+                        <small class="text-muted">9 mins</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
 {% endblock %}

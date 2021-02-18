@@ -1,0 +1,25 @@
+.form-create, .form-modify{
+    width: 100% !important;
+    text-align: center;
+}
+
+    .form-create label, .form-modify label{
+        width: 20%;
+    }
+
+    .form-create input, optgroup, select, textarea{
+        width: 40%;
+        height: 50px;
+    }
+    .form-create input[type=text], .form-modify input[type=text]{
+        border: 1px solid #ced4da;
+    }
+
+    .form-create button, .form-modify button{
+        width: auto !important;
+    }
+
+    .form-modify input, optgroup, select, textarea{
+        width: 40%;
+        height: 50px;
+    }

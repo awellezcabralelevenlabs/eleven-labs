@@ -1,29 +1,18 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Project "Docker / Symfony"{% endblock %}
+{% block title %}Create a product{% endblock %}
 
 {% block body %}
-    {% for flashError in app.flashes('verify_email_error') %}
-        <div class="alert alert-danger" role="alert">{{ flashError }}</div>
-    {% endfor %}
-
-    <div class="mb-3">
-        You are logged in as {{ app.user.username }}, <a href="{{ path('app_logout') }}">Logout</a>
-    </div>
-    <div class="mb-3">
-        <a href="{{ path('product') }}">< Back</a>
-    </div>
-
-    <h1>Create a product</h1>
-
-    {{ form_start(createFormProduct) }}
-        {{ form_row(createFormProduct.title) }}
-        {{ form_row(createFormProduct.description, {
-            label: 'Description'
-        }) }}
-        {{ form_row(createFormProduct.price) }}
-        {{ form_row(createFormProduct.city) }}
-        {{ form_row(createFormProduct.pictures) }}
-        <button type="submit" class="btn">Create</button>
-    {{ form_end(createFormProduct) }}
+    <main class="form-create">
+        {{ form_start(createFormProduct) }}
+            {{ form_row(createFormProduct.title) }}
+            {{ form_row(createFormProduct.description, {
+                label: 'Description'
+            }) }}
+            {{ form_row(createFormProduct.price) }}
+            {{ form_row(createFormProduct.city) }}
+            {{ form_row(createFormProduct.pictures) }}
+            <button class="w-100 btn btn-lg btn-primary" type="submit">Create</button>
+        {{ form_end(createFormProduct) }}
+    </main>
 {% endblock %}
