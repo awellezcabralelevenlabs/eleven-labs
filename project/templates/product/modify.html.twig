@@ -3,6 +3,11 @@
 {% block title %}Modify product{% endblock %}
 
 {% block body %}
+
+    <div class="mb-3">
+        <a href="{{ path('product') }}">< Back</a>
+    </div>
+
     <main class="form-modify">
         {{ form_start(modifyFormProduct) }}
             {{ form_row(modifyFormProduct.title) }}

@@ -19,11 +19,11 @@
                 <div class="container">
                     {% if app.user %}
                         <div class="navbar-brand d-flex align-items-center">
-                            You are logged in as {{ app.user.username }}, <a href="{{ path('app_logout') }}">Logout</a>
+                            You are logged in as {{ app.user.username }}, <a href="{{ path('app_logout') }}">Logout</a> / <a href="{{ path('app_modify_profile') }}">My profile</a>
                         </div>
                     {% else %}
                         <div class="navbar-brand d-flex align-items-center">
-                            For post new articles, <a href="{{ path('app_login') }}">Login</a>
+                            <a href="{{ path('app_register') }}">Register</a> - For post new articles, <a href="{{ path('app_login') }}">Login</a>
                         </div>
                     {% endif %}
                 </div>

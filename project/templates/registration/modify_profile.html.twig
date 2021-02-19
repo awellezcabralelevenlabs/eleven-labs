@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modify my profile{% endblock %}
+
+{% block body %}
+
+    <div class="mb-3">
+        <a href="{{ path('product') }}">< Back</a>
+    </div>
+
+    {% for flashError in app.flashes('verify_email_error') %}
+        <div class="alert alert-danger" role="alert">{{ flashError }}</div>
+    {% endfor %}
+
+    <main class="form-create">
+
+        <h1 class="h3 mb-3 font-weight-normal">Modify my profile</h1>
+
+        {{ form_start(modifProfileForm) }}
+            {{ form_row(modifProfileForm.email) }}
+
+            <button class="w-100 btn btn-lg btn-primary" type="submit">Modify</button>
+        {{ form_end(modifProfileForm) }}
+    </main>
+{% endblock %}

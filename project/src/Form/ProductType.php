@@ -6,6 +6,7 @@ use App\Entity\Product;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 
 class ProductType extends AbstractType
@@ -14,17 +15,15 @@ class ProductType extends AbstractType
     {
         $builder
             ->add('title')
-            ->add('description')
+            ->add('description', TextareaType::class, [
+                'attr' => ['class' => 'tinymce'],
+            ])
             ->add('price')
             ->add('city')
-            // ->add('longLat')
-            // ->add('uid')
-            // ->add('pictures')
             ->add('pictures', FileType::class, [
                 'mapped' => false,
                 'required' => false
             ])
-            // ->add('date')
         ;
     }
 

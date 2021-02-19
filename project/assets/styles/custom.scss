@@ -7,9 +7,13 @@
         width: 20%;
     }
 
-    .form-create input, optgroup, select, textarea{
+    .form-create input, optgroup, select{
         width: 40%;
         height: 50px;
+    }
+    .form-create textarea, .form-modify textarea{
+        width: 40%;
+        height: 150px !important;
     }
     .form-create input[type=text], .form-modify input[type=text]{
         border: 1px solid #ced4da;
@@ -19,7 +23,16 @@
         width: auto !important;
     }
 
-    .form-modify input, optgroup, select, textarea{
+    .form-modify input, optgroup, select{
         width: 40%;
         height: 50px;
+    }
+
+    .form-create .form-control{
+        display: initial !important;
+    }
+
+    .form-create input[type=checkbox]{
+        width: auto !important;
+        height: auto !important;
     }
