@@ -1,4 +1,5 @@
 security:
+    access_denied_url: /product
     encoders:
         App\Entity\User:
             algorithm: auto
@@ -25,6 +26,10 @@ security:
                 path: app_logout
                 # where to redirect after logout
                 target: product
+            remember_me:
+                secret:   '%kernel.secret%'
+                lifetime: 604800 # 1 week in seconds
+                path:     /
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#firewalls-authentication
@@ -37,4 +42,6 @@ security:
     access_control:
         - { path: ^/product/create, roles: IS_AUTHENTICATED_FULLY }
         - { path: ^/product/\d+$, roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/register, roles: IS_ANONYMOUS}
+        - { path: ^/login, roles: IS_ANONYMOUS}
         # - { path: ^/profile, roles: ROLE_USER }
